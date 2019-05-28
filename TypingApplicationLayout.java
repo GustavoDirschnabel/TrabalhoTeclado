@@ -1,14 +1,22 @@
 
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 public class TypingApplicationLayout extends JFrame {
+
 	private JTabbedPane tabbedPane;
 	private JPanel mainPanel;
 	private JPanel keyPane;
 	private JPanel pangPanel;
 	private JPanel histPanel;
 	private JPanel labelPanel;
+	
+	private JTextArea textHist;
 	private JTextArea textA;
 	
 	private JLabel labelPangrama;
@@ -23,7 +31,13 @@ public class TypingApplicationLayout extends JFrame {
 	
 	private GridBagConstraints constraints;
 	private GridBagLayout keyLayout;
-	private GridBagLayout mainLayout;
+	
+	private JRadioButton pangrama1;
+	private JRadioButton pangrama2;
+	private JRadioButton pangrama3;
+	private JRadioButton pangrama4;
+	private JRadioButton pangrama5;
+	
 	
 	public TypingApplicationLayout(){
 		super("Typing App");
@@ -31,21 +45,20 @@ public class TypingApplicationLayout extends JFrame {
 		
 		tabbedPane = new JTabbedPane();
 		
+		//Inicializando a primeira tab
+		
 		textA = new JTextArea(10,10);
+		textA.setPreferredSize(new Dimension(1200,550));
 		
 		mainPanel = new JPanel();//Inicializando main panel do teclado
-		mainLayout = new GridBagLayout();
-		mainPanel.setLayout(mainLayout);
-		constraints = new GridBagConstraints();
+		mainPanel.setLayout(new BorderLayout());
 		JPanel textPane = new JPanel();//Criando panel para TextArea
 		textPane.add(textA);
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-		constraints.gridheight = 1;
-		constraints.gridwidth = 1;
-		mainLayout.setConstraints(textPane, constraints);
-		mainPanel.add(textPane);
+		mainPanel.add(textPane,BorderLayout.NORTH);
+		
+		
+		textPane.setPreferredSize(new Dimension(500, 400));
+		
 		
 		labelPanel = new JPanel();
 		labelPanel.setLayout(new GridLayout(2,1));
@@ -55,18 +68,14 @@ public class TypingApplicationLayout extends JFrame {
 		
 		labelResult = new JLabel("dasdasd");
 		labelPanel.add(labelResult);
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridx = 0;
-		constraints.gridy = 1;
-		constraints.gridheight = 1;
-		constraints.gridwidth = 1;
-		mainLayout.setConstraints(labelPanel, constraints);
-		mainPanel.add(labelPanel);
+		mainPanel.add(labelPanel,BorderLayout.CENTER);
 		
 		keyPane = new JPanel();//Criando panel do teclado
 		keyLayout = new GridBagLayout();
 		keyPane.setLayout(keyLayout);
 		teclado = new JButton[teclas.length];// inicializando os botoes
+		constraints = new GridBagConstraints();
+		
 		for(int i = 0; i < teclas.length ; i++) {
 			teclado[i] = new JButton(teclas[i]);
 		}
@@ -133,23 +142,82 @@ public class TypingApplicationLayout extends JFrame {
 		
 		
 		
-		
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridx = 0;
-		constraints.gridy = 2;
-		constraints.gridheight = 1;
-		constraints.gridwidth = 1;
-		mainLayout.setConstraints(keyPane, constraints);
-		mainPanel.add(keyPane);
+		keyPane.setPreferredSize(new Dimension(400,250));
+		mainPanel.add(keyPane,BorderLayout.SOUTH);
 		tabbedPane.addTab("Teclado",null,mainPanel,"Teste sua habilidade!");
 		
+		//Inicializando a segunda tab
+		
 		pangPanel = new JPanel();
+		pangPanel.setLayout(new GridLayout(5,1));
+		
+		pangrama1 = new JRadioButton("Um pequeno jabuti xereta viu dez cegonhas felizes (42 letras)");
+		pangrama2 = new JRadioButton("Quem traz CD, LP, fax, engov e whisky JB? (29 letras)");
+		pangrama3 = new JRadioButton("Gazeta publica hoje breve nota de faxina na quermesse (46 letras)");
+		pangrama4 = new JRadioButton("Jovem craque belga prediz falhas no xote (34 letras)");
+		pangrama5 = new JRadioButton("Bancos fúteis pagavam-lhe queijo, whisky e xadrez (41 letras)");
+		
+		pangPanel.add(pangrama5);
+		pangPanel.add(pangrama4);
+		pangPanel.add(pangrama3);
+		pangPanel.add(pangrama2);
+		pangPanel.add(pangrama1);
+		
+		ButtonGroup grupoRadio = new ButtonGroup();
+		grupoRadio.add(pangrama5);
+		grupoRadio.add(pangrama4);
+		grupoRadio.add(pangrama3);
+		grupoRadio.add(pangrama2);
+		grupoRadio.add(pangrama1);
+			
+		OuvidorRadioButton handler = new OuvidorRadioButton();
+		pangrama5.addItemListener(handler);
+		pangrama4.addItemListener(handler);
+		pangrama3.addItemListener(handler);
+		pangrama2.addItemListener(handler);
+		pangrama1.addItemListener(handler);
+		
 		tabbedPane.addTab("Teste Pangrama",null, pangPanel,"Escolha um desafio!");
 		
+		//Inicializando a terceira tab
+		
 		histPanel = new JPanel();
+		
+		textHist = new JTextArea();
+		textHist.setPreferredSize(new Dimension(1076,720));
+		textHist.setEditable(false);
+		textHist.setText("fasd");
+		histPanel.add(textHist);
+		
 		tabbedPane.addTab("Histórico", null, histPanel, "Veja seu historico!");
 		
 		add(tabbedPane);
+		
+
+	}
+	
+	private class OuvidorRadioButton implements ItemListener {
+		
+		@Override
+		public void itemStateChanged(ItemEvent e) {
+			if(e.getSource() == pangrama1) {
+				labelPangrama.setText("Um pequeno jabuti xereta viu dez cegonhas felizes");
+			}
+			else if (e.getSource() == pangrama2) {
+				labelPangrama.setText("Quem traz CD, LP, fax, engov e whisky JB?");
+			}
+			else if(e.getSource() == pangrama3) {
+				labelPangrama.setText("Gazeta publica hoje breve nota de faxina na quermesse");
+			}
+			else if(e.getSource() == pangrama4) {
+				labelPangrama.setText("Jovem craque belga prediz falhas no xote");
+			}
+			else if(e.getSource() == pangrama5) {
+				labelPangrama.setText("Bancos fúteis pagavam-lhe queijo, whisky e xadrez");
+			}
+			
+		}
+		
 	}
 	
 	private void addComponent(Component component, int row, int column, int width, int height) {
@@ -167,6 +235,7 @@ public class TypingApplicationLayout extends JFrame {
 		test.setSize(1080, 720);
 		test.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		test.setVisible(true);
+		test.setResizable(false);
 	}
 	
 }
