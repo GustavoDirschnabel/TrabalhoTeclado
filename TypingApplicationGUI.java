@@ -7,7 +7,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-public class TypingApplicationLayout extends JFrame {
+public class TypingApplicationGUI extends JFrame {
 
 	private JTabbedPane tabbedPane;
 	private JPanel mainPanel;
