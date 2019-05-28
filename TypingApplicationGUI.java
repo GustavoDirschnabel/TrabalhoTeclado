@@ -38,8 +38,9 @@ public class TypingApplicationGUI extends JFrame {
 	private JRadioButton pangrama4;
 	private JRadioButton pangrama5;
 	
+	private String pangramaAtual;
 	
-	public TypingApplicationLayout(){
+	public TypingApplicationGUI(){
 		super("Typing App");
 		setLayout(new BorderLayout());
 		
@@ -48,7 +49,7 @@ public class TypingApplicationGUI extends JFrame {
 		//Inicializando a primeira tab
 		
 		textA = new JTextArea(10,10);
-		textA.setPreferredSize(new Dimension(1200,550));
+		textA.setPreferredSize(new Dimension(1070,550));
 		
 		mainPanel = new JPanel();//Inicializando main panel do teclado
 		mainPanel.setLayout(new BorderLayout());
@@ -66,7 +67,7 @@ public class TypingApplicationGUI extends JFrame {
 		labelPangrama = new JLabel("Teste sua habilidade escolhendo um pangrama");
 		labelPanel.add(labelPangrama);
 		
-		labelResult = new JLabel("dasdasd");
+		labelResult = new JLabel("");
 		labelPanel.add(labelResult);
 		mainPanel.add(labelPanel,BorderLayout.CENTER);
 		
@@ -184,7 +185,7 @@ public class TypingApplicationGUI extends JFrame {
 		histPanel = new JPanel();
 		
 		textHist = new JTextArea();
-		textHist.setPreferredSize(new Dimension(1076,720));
+		textHist.setPreferredSize(new Dimension(1070,720));
 		textHist.setEditable(false);
 		textHist.setText("fasd");
 		histPanel.add(textHist);
@@ -202,18 +203,23 @@ public class TypingApplicationGUI extends JFrame {
 		public void itemStateChanged(ItemEvent e) {
 			if(e.getSource() == pangrama1) {
 				labelPangrama.setText("Um pequeno jabuti xereta viu dez cegonhas felizes");
+				pangramaAtual = "Um pequeno jabuti xereta viu dez cegonhas felizes";
 			}
 			else if (e.getSource() == pangrama2) {
 				labelPangrama.setText("Quem traz CD, LP, fax, engov e whisky JB?");
+				pangramaAtual = "Quem traz CD, LP, fax, engov e whisky JB?";
 			}
 			else if(e.getSource() == pangrama3) {
 				labelPangrama.setText("Gazeta publica hoje breve nota de faxina na quermesse");
+				pangramaAtual = "Gazeta publica hoje breve nota de faxina na quermesse";
 			}
 			else if(e.getSource() == pangrama4) {
 				labelPangrama.setText("Jovem craque belga prediz falhas no xote");
+				pangramaAtual = "Jovem craque belga prediz falhas no xote";
 			}
 			else if(e.getSource() == pangrama5) {
 				labelPangrama.setText("Bancos fúteis pagavam-lhe queijo, whisky e xadrez");
+				pangramaAtual = "Bancos fúteis pagavam-lhe queijo, whisky e xadrez";
 			}
 			
 		}
@@ -231,7 +237,7 @@ public class TypingApplicationGUI extends JFrame {
 	}
 	
 	public static void main(String args[]) {
-		TypingApplicationLayout test = new TypingApplicationLayout();
+		TypingApplicationGUI test = new TypingApplicationGUI();
 		test.setSize(1080, 720);
 		test.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		test.setVisible(true);
