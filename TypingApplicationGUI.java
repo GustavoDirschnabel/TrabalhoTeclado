@@ -42,6 +42,10 @@ public class TypingApplicationGUI extends JFrame {
 	
 	private String pangramaAtual;
 	
+	
+	private Color corBotao;
+	
+	
 	public TypingApplicationGUI(){
 		super("Typing App");
 		setLayout(new BorderLayout());
@@ -142,6 +146,7 @@ public class TypingApplicationGUI extends JFrame {
 		addComponent(teclado[54],4,12,1,1);
 		addComponent(teclado[55],4,13,1,1);
 		addComponent(teclado[56],4,14,1,1);
+		corBotao = teclado[1].getBackground();
 		
 		KeyHandler kh = new KeyHandler();
 		textA.addKeyListener(kh);
@@ -230,15 +235,11 @@ public class TypingApplicationGUI extends JFrame {
 	}
 	
 	private class KeyHandler implements KeyListener{
-
+		
 		@Override
 		public void keyTyped(KeyEvent e) {
-			// TODO Auto-generated method stub
-			System.out.println(e.getKeyChar());
-			System.out.println(e.getExtendedKeyCode());
-			if(e.getKeyCode() == KeyEvent.VK_Q) {
-				teclado[1].setBackground(Color.BLACK);
-				
+			if(e.getKeyChar() == '~') {
+				teclado[0].setBackground(Color.BLUE);
 			}
 			
 		}
@@ -246,12 +247,127 @@ public class TypingApplicationGUI extends JFrame {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			
+			if(e.getKeyCode() == KeyEvent.VK_1) {
+				teclado[1].setBackground(Color.BLUE);
+			}
+			if(e.getKeyCode() == KeyEvent.VK_2) {
+				teclado[2].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_3) {
+				teclado[3].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_4) {
+				teclado[4].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_5) {
+				teclado[5].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_6) {
+				teclado[6].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_7) {
+				teclado[7].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_8) {
+				teclado[8].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_9) {
+				teclado[9].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_0) {
+				teclado[10].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_MINUS) {
+				teclado[11].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_EQUALS) {
+				teclado[12].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+				teclado[13].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_TAB) {
+				teclado[14].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_Q) {
+				teclado[15].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_W) {
+				teclado[16].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_E) {
+				teclado[17].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_R) {
+				teclado[18].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_T) {
+				teclado[19].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_Y) {
+				teclado[20].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_U) {
+				teclado[21].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_I) {
+				teclado[22].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_O) {
+				teclado[23].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_P) {
+				teclado[24].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_OPEN_BRACKET) {
+				teclado[25].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_CLOSE_BRACKET) {
+				teclado[26].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_BACK_SLASH) {
+				teclado[27].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_CAPS_LOCK) {
+				teclado[28].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_A) {
+				teclado[29].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_S) {
+				teclado[30].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_D) {
+				teclado[31].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_F) {
+				teclado[32].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_G) {
+				teclado[33].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_H) {
+				teclado[34].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_J) {
+				teclado[35].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_K) {
+				teclado[36].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_L) {
+				teclado[37].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_SEMICOLON) {
+				teclado[38].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_QUOTE) {
+				teclado[39].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+				teclado[40].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_SHIFT) {
+				teclado[41].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_Z) {
+				teclado[42].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_X) {
+				teclado[43].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_C) {
+				teclado[44].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_V) {
+				teclado[45].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_B) {
+				teclado[46].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_N) {
+				teclado[47].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_M) {
+				teclado[48].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_COMMA) {
+				teclado[49].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_PERIOD) {
+				teclado[50].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_SLASH) {
+				teclado[51].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_UP) {
+				teclado[52].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+				teclado[53].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+				teclado[54].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+				teclado[55].setBackground(Color.BLUE);
+			}if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+				teclado[56].setBackground(Color.BLUE);
+			}
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			// TODO Auto-generated method stub
-			
+				for(int i = 0; i < teclado.length;i++) {
+					teclado[i].setBackground(corBotao);
+				}
 		}
 		
 	}
