@@ -7,6 +7,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 public class TypingApplicationGUI extends JFrame {
 
 	private JTabbedPane tabbedPane;
@@ -59,7 +61,7 @@ public class TypingApplicationGUI extends JFrame {
 		
 		
 		textPane.setPreferredSize(new Dimension(500, 400));
-		
+		textPane.grabFocus();
 		
 		labelPanel = new JPanel();
 		labelPanel.setLayout(new GridLayout(2,1));
@@ -141,7 +143,8 @@ public class TypingApplicationGUI extends JFrame {
 		addComponent(teclado[55],4,13,1,1);
 		addComponent(teclado[56],4,14,1,1);
 		
-		
+		KeyHandler kh = new KeyHandler();
+		textA.addKeyListener(kh);
 		
 		keyPane.setPreferredSize(new Dimension(400,250));
 		mainPanel.add(keyPane,BorderLayout.SOUTH);
@@ -221,6 +224,33 @@ public class TypingApplicationGUI extends JFrame {
 				labelPangrama.setText("Bancos fúteis pagavam-lhe queijo, whisky e xadrez");
 				pangramaAtual = "Bancos fúteis pagavam-lhe queijo, whisky e xadrez";
 			}
+			
+		}
+		
+	}
+	
+	private class KeyHandler implements KeyListener{
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+			// TODO Auto-generated method stub
+			System.out.println(e.getKeyChar());
+			System.out.println(e.getExtendedKeyCode());
+			if(e.getKeyCode() == KeyEvent.VK_Q) {
+				teclado[1].setBackground(Color.BLACK);
+				
+			}
+			
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			// TODO Auto-generated method stub
 			
 		}
 		
