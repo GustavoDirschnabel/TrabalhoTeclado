@@ -279,7 +279,9 @@ public class TypingApplicationGUI extends JFrame {
 				verificarTeclasValidas(e.getKeyCode());
 			}
 			catch(InvalidKeyException keye) {
-				JOptionPane.showMessageDialog(null, "Uma tecla INVALIDA foi digitada!", "Erro", JOptionPane.ERROR_MESSAGE);
+				if(e.getKeyChar() != '/' && e.getKeyChar() != '?' && e.getKeyCode() != 131) {
+					JOptionPane.showMessageDialog(null, "Uma tecla INVALIDA foi digitada!", "Erro", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		}
 
@@ -449,8 +451,6 @@ public class TypingApplicationGUI extends JFrame {
 			teclado[56].setBackground(Color.BLUE);
 		}
 		else {
-			System.out.println(KeyEvent.VK_SLASH);
-			System.out.println(KeyCode);
 			throw new InvalidKeyException("InvalidKeyException");
 		}
 	}
