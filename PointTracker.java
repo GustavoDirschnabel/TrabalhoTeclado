@@ -1,6 +1,8 @@
 
 public class PointTracker {
 	private int erros = 0;
+	private int acertos = 0;
+	private int lastCorrectlyTypedIndex = -1;
 	
 	public PointTracker() {
 		
@@ -9,34 +11,28 @@ public class PointTracker {
 	public boolean compareStrings(String currentString, String targetString) {
 		if(currentString.charAt(currentString.length() - 1) != targetString.charAt(currentString.length() - 1))
 			erros++;
+		else if (currentString.length() - 1 > lastCorrectlyTypedIndex) {
+			acertos++;
+			lastCorrectlyTypedIndex++;
+		}
 		if(currentString.length() == targetString.length())
-			return true;
-		return false;
+			return false;
+		return true;
 	}
 
-	public int getAcertos(String targetString) {
-		return targetString.length() - this.erros;
+	public int getAcertos() {
+		return acertos;
 	}
 
 	public int getErros() {
 		return erros;
 	}
 
-	public void setErros(int erros) {
-		this.erros = erros;
+	public void resetValuesToDefault() {
+		this.erros = 0;
+		this.acertos = 0;
+		this.lastCorrectlyTypedIndex = -1;
 	}
 	
-	public static void main(String[] args) {
-		PointTracker pontit = new PointTracker();
-		String referenceString = "abbaa";
-		String test = "";
-		for(int i = 0; i < 5; i++) {
-			test += "a";
-			pontit.compareStrings(test, referenceString);
-		}
-		
-		System.out.println(pontit.getAcertos(referenceString));
-		System.out.println(pontit.getErros());
-	}
 	
 }

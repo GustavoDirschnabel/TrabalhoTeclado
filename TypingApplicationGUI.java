@@ -19,7 +19,7 @@ public class TypingApplicationGUI extends JFrame {
 	private JPanel labelPanel;
 	
 	private JTextArea textHist;
-	private JTextArea textA;
+	private JTextArea textA = new JTextArea(10,10);
 	
 	private JLabel labelPangrama;
 	private JLabel labelResult;
@@ -40,11 +40,18 @@ public class TypingApplicationGUI extends JFrame {
 	private JRadioButton pangrama4;
 	private JRadioButton pangrama5;
 	
+	private ButtonGroup grupoRadio;
+	
+	private PointTracker pontos = new PointTracker();
+	
 	private String pangramaAtual;
 	
 	
 	private Color corBotao;
 	
+	private HistoricoIO save = new HistoricoIO();
+	
+	private boolean modoPangrama = false;
 	
 	public TypingApplicationGUI(){
 		super("Typing App");
@@ -54,7 +61,7 @@ public class TypingApplicationGUI extends JFrame {
 		
 		//Inicializando a primeira tab
 		
-		textA = new JTextArea(10,10);
+		//textA = new JTextArea(10,10);
 		textA.setPreferredSize(new Dimension(1070,550));
 		
 		mainPanel = new JPanel();//Inicializando main panel do teclado
@@ -151,7 +158,7 @@ public class TypingApplicationGUI extends JFrame {
 		KeyHandler kh = new KeyHandler();
 		textA.addKeyListener(kh);
 		
-		keyPane.setPreferredSize(new Dimension(400,250));
+		keyPane.setPreferredSize(new Dimension(400,230));
 		mainPanel.add(keyPane,BorderLayout.SOUTH);
 		tabbedPane.addTab("Teclado",null,mainPanel,"Teste sua habilidade!");
 		
@@ -164,7 +171,7 @@ public class TypingApplicationGUI extends JFrame {
 		pangrama2 = new JRadioButton("Quem traz CD, LP, fax, engov e whisky JB? (29 letras)");
 		pangrama3 = new JRadioButton("Gazeta publica hoje breve nota de faxina na quermesse (46 letras)");
 		pangrama4 = new JRadioButton("Jovem craque belga prediz falhas no xote (34 letras)");
-		pangrama5 = new JRadioButton("Bancos fúteis pagavam-lhe queijo, whisky e xadrez (41 letras)");
+		pangrama5 = new JRadioButton("Bancos futeis pagavam-lhe queijo, whisky e xadrez (41 letras)");
 		
 		pangPanel.add(pangrama5);
 		pangPanel.add(pangrama4);
@@ -172,7 +179,7 @@ public class TypingApplicationGUI extends JFrame {
 		pangPanel.add(pangrama2);
 		pangPanel.add(pangrama1);
 		
-		ButtonGroup grupoRadio = new ButtonGroup();
+		grupoRadio = new ButtonGroup();
 		grupoRadio.add(pangrama5);
 		grupoRadio.add(pangrama4);
 		grupoRadio.add(pangrama3);
@@ -195,12 +202,14 @@ public class TypingApplicationGUI extends JFrame {
 		textHist = new JTextArea();
 		textHist.setPreferredSize(new Dimension(1070,720));
 		textHist.setEditable(false);
-		textHist.setText("fasd");
+		textHist.setText(save.readFile());
 		histPanel.add(textHist);
 		
-		tabbedPane.addTab("Histórico", null, histPanel, "Veja seu historico!");
+		tabbedPane.addTab("Hist�rico", null, histPanel, "Veja seu historico!");
 		
 		add(tabbedPane);
+		
+	
 		
 
 	}
@@ -209,25 +218,45 @@ public class TypingApplicationGUI extends JFrame {
 		
 		@Override
 		public void itemStateChanged(ItemEvent e) {
-			if(e.getSource() == pangrama1) {
+			if(e.getSource() == pangrama1 && pangrama1.isSelected()) {
 				labelPangrama.setText("Um pequeno jabuti xereta viu dez cegonhas felizes");
 				pangramaAtual = "Um pequeno jabuti xereta viu dez cegonhas felizes";
+				textA.setText("");
+				modoPangrama = true;
+				pontos.resetValuesToDefault();
+				
 			}
-			else if (e.getSource() == pangrama2) {
+			else if (e.getSource() == pangrama2 && pangrama2.isSelected()) {
 				labelPangrama.setText("Quem traz CD, LP, fax, engov e whisky JB?");
 				pangramaAtual = "Quem traz CD, LP, fax, engov e whisky JB?";
+				textA.setText("");
+				modoPangrama = true;
+				pontos.resetValuesToDefault();
+				
 			}
-			else if(e.getSource() == pangrama3) {
+			else if(e.getSource() == pangrama3 && pangrama3.isSelected()) {
 				labelPangrama.setText("Gazeta publica hoje breve nota de faxina na quermesse");
 				pangramaAtual = "Gazeta publica hoje breve nota de faxina na quermesse";
+				textA.setText("");
+				modoPangrama = true;
+				pontos.resetValuesToDefault();
+				
 			}
-			else if(e.getSource() == pangrama4) {
+			else if(e.getSource() == pangrama4 && pangrama4.isSelected()) {
 				labelPangrama.setText("Jovem craque belga prediz falhas no xote");
 				pangramaAtual = "Jovem craque belga prediz falhas no xote";
+				textA.setText("");
+				modoPangrama = true;
+				pontos.resetValuesToDefault();
+				
 			}
-			else if(e.getSource() == pangrama5) {
-				labelPangrama.setText("Bancos fúteis pagavam-lhe queijo, whisky e xadrez");
-				pangramaAtual = "Bancos fúteis pagavam-lhe queijo, whisky e xadrez";
+			else if(e.getSource() == pangrama5 && pangrama5.isSelected()) {
+				labelPangrama.setText("Bancos futeis pagavam-lhe queijo, whisky e xadrez");
+				pangramaAtual = "Bancos futeis pagavam-lhe queijo, whisky e xadrez";
+				textA.setText("");
+				modoPangrama = true;
+				pontos.resetValuesToDefault();
+				
 			}
 			
 		}
@@ -246,120 +275,11 @@ public class TypingApplicationGUI extends JFrame {
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			
-			if(e.getKeyCode() == KeyEvent.VK_1) {
-				teclado[1].setBackground(Color.BLUE);
+			try {
+				verificarTeclasValidas(e.getKeyCode());
 			}
-			if(e.getKeyCode() == KeyEvent.VK_2) {
-				teclado[2].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_3) {
-				teclado[3].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_4) {
-				teclado[4].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_5) {
-				teclado[5].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_6) {
-				teclado[6].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_7) {
-				teclado[7].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_8) {
-				teclado[8].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_9) {
-				teclado[9].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_0) {
-				teclado[10].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_MINUS) {
-				teclado[11].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_EQUALS) {
-				teclado[12].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-				teclado[13].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_TAB) {
-				teclado[14].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_Q) {
-				teclado[15].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_W) {
-				teclado[16].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_E) {
-				teclado[17].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_R) {
-				teclado[18].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_T) {
-				teclado[19].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_Y) {
-				teclado[20].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_U) {
-				teclado[21].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_I) {
-				teclado[22].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_O) {
-				teclado[23].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_P) {
-				teclado[24].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_OPEN_BRACKET) {
-				teclado[25].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_CLOSE_BRACKET) {
-				teclado[26].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_BACK_SLASH) {
-				teclado[27].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_CAPS_LOCK) {
-				teclado[28].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_A) {
-				teclado[29].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_S) {
-				teclado[30].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_D) {
-				teclado[31].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_F) {
-				teclado[32].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_G) {
-				teclado[33].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_H) {
-				teclado[34].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_J) {
-				teclado[35].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_K) {
-				teclado[36].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_L) {
-				teclado[37].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_SEMICOLON) {
-				teclado[38].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_QUOTE) {
-				teclado[39].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-				teclado[40].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_SHIFT) {
-				teclado[41].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_Z) {
-				teclado[42].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_X) {
-				teclado[43].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_C) {
-				teclado[44].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_V) {
-				teclado[45].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_B) {
-				teclado[46].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_N) {
-				teclado[47].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_M) {
-				teclado[48].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_COMMA) {
-				teclado[49].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_PERIOD) {
-				teclado[50].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_SLASH) {
-				teclado[51].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_UP) {
-				teclado[52].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-				teclado[53].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-				teclado[54].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-				teclado[55].setBackground(Color.BLUE);
-			}if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-				teclado[56].setBackground(Color.BLUE);
+			catch(InvalidKeyException keye) {
+				JOptionPane.showMessageDialog(null, "Uma tecla INVALIDA foi digitada!", "Erro", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 
@@ -368,8 +288,171 @@ public class TypingApplicationGUI extends JFrame {
 				for(int i = 0; i < teclado.length;i++) {
 					teclado[i].setBackground(corBotao);
 				}
-		}
+				
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					int newCaretPos = textA.getCaretPosition();
+					if(!modoPangrama) {
+						textA.setText("");
+						newCaretPos = 0;
+					}
+					else {
+						for(int i = textA.getCaretPosition() - 1; i >= 0; i--) {
+							if(textA.getText().charAt(i) != ' ') {
+								newCaretPos = i;
+								break;
+							}
+							else if(i == 0)
+								newCaretPos = 0;
+						}
+					}
+					textA.setCaretPosition(newCaretPos);
+				}
+					try {
+						if(modoPangrama) {
+							modoPangrama = pontos.compareStrings(textA.getText(), pangramaAtual);
+							labelResult.setText("Acertos: " + pontos.getAcertos() + "    Erros: " + pontos.getErros());
+						}
+					}
+					catch(NullPointerException nullPtr) {
+						
+					}
+					
+					if(!modoPangrama && pangramaAtual != null) {
+						textA.setText("");
+						labelPangrama.setText("Pangrama Anterior: " + labelPangrama.getText());
+						if(pontos.getErros() == 0)
+							labelResult.setText(labelResult.getText() + "    A Frase foi Digitada Corretamente!");
+						else
+							labelResult.setText(labelResult.getText() + "    A Frase foi Digitada Incorretamente!");
+						pangramaAtual = null;
+						grupoRadio.clearSelection();
+					}
+				}
 		
+	}
+	
+	private void verificarTeclasValidas(int KeyCode) throws InvalidKeyException {
+		if(KeyCode == KeyEvent.VK_1) {
+			teclado[1].setBackground(Color.BLUE);
+		}
+		else if(KeyCode == KeyEvent.VK_2) {
+			teclado[2].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_3) {
+			teclado[3].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_4) {
+			teclado[4].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_5) {
+			teclado[5].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_6) {
+			teclado[6].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_7) {
+			teclado[7].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_8) {
+			teclado[8].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_9) {
+			teclado[9].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_0) {
+			teclado[10].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_MINUS) {
+			teclado[11].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_EQUALS) {
+			teclado[12].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_BACK_SPACE) {
+			teclado[13].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_TAB) {
+			teclado[14].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_Q) {
+			teclado[15].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_W) {
+			teclado[16].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_E) {
+			teclado[17].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_R) {
+			teclado[18].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_T) {
+			teclado[19].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_Y) {
+			teclado[20].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_U) {
+			teclado[21].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_I) {
+			teclado[22].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_O) {
+			teclado[23].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_P) {
+			teclado[24].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_OPEN_BRACKET) {
+			teclado[25].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_CLOSE_BRACKET) {
+			teclado[26].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_BACK_SLASH) {
+			teclado[27].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_CAPS_LOCK) {
+			teclado[28].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_A) {
+			teclado[29].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_S) {
+			teclado[30].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_D) {
+			teclado[31].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_F) {
+			teclado[32].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_G) {
+			teclado[33].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_H) {
+			teclado[34].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_J) {
+			teclado[35].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_K) {
+			teclado[36].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_L) {
+			teclado[37].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_SEMICOLON) {
+			teclado[38].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_QUOTE) {
+			teclado[39].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_ENTER) {
+			save.writeFile(textA.getText());
+			textHist.setText(save.readFile());
+			teclado[40].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_SHIFT) {
+			teclado[41].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_Z) {
+			teclado[42].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_X) {
+			teclado[43].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_C) {
+			teclado[44].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_V) {
+			teclado[45].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_B) {
+			teclado[46].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_N) {
+			teclado[47].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_M) {
+			teclado[48].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_COMMA) {
+			teclado[49].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_PERIOD) {
+			teclado[50].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_SLASH) {
+			teclado[51].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_UP) {
+			teclado[52].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_SPACE) {
+			teclado[53].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_LEFT) {
+			teclado[54].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_DOWN) {
+			teclado[55].setBackground(Color.BLUE);
+		}else if(KeyCode == KeyEvent.VK_RIGHT) {
+			teclado[56].setBackground(Color.BLUE);
+		}
+		else {
+			System.out.println(KeyEvent.VK_SLASH);
+			System.out.println(KeyCode);
+			throw new InvalidKeyException("InvalidKeyException");
+		}
 	}
 	
 	private void addComponent(Component component, int row, int column, int width, int height) {
